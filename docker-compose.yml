@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  cloud:
+    image: nginx:latest
+    container_name: cloud_origin
+    volumes:
+      - ./cloud/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./cloud/content:/data:ro
+    ports:
+      - "9000:80"
+
+  edge1:
+    image: nginx:latest
+    container_name: edge1
+    volumes:
+      - ./edge/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./edge/cache:/cache
+    ports:
+      - "8001:80"
+    depends_on:
+      - cloud
+
+  edge2:
+    image: nginx:latest
+    container_name: edge2
+    volumes:
+      - ./edge/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./edge/cache:/cache
+    ports:
+      - "8002:80"
+    depends_on:
+      - cloud
+
+  edge3:
+    image: nginx:latest
+    container_name: edge3
+    volumes:
+      - ./edge/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./edge/cache:/cache
+    ports:
+      - "8003:80"
+    depends_on:
+      - cloud
+
+  orchestrator:
+    build: ./orchestrator
+    container_name: edge_orchestrator
+    depends_on:
+      - edge1
+      - edge2
+      - edge3
+      - cloud
