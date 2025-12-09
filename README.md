@@ -32,8 +32,14 @@ cd edge-cdn
 # Create some test content
 mkdir -p cloud/content
 echo "hello from cloud" > cloud/content/sensor.json
-truncate -s 5M cloud/content/video1.mp4
-truncate -s 5M cloud/content/video2.mp4
+for i in $(seq 1 100); do echo "sensor ${i}" > cloud/content/sensor${i}.json; done
+
+# 100 mp4s
+for i in $(seq 1 100); do truncate -s 5M cloud/content/video${i}.mp4; done
 
 # Create edge cache directory
 mkdir -p edge/cache
+
+# Train the LSTM (optional; orchestrator falls back to EMA if not present)
+# Run experiments/train_popularity.ipynb to produce orchestrator/popularity.pt
+```
