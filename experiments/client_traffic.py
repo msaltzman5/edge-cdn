@@ -10,8 +10,9 @@ EDGE_NODES = {
     "edge3": "http://localhost:8003",
 }
 
-MP4_VIDEOS = [f"/video{i}.mp4" for i in range(1, 6)]
-OBJECTS = MP4_VIDEOS + ["/sensor.json"]
+MP4_VIDEOS = [f"/video{i}.mp4" for i in range(1, 101)]
+SENSOR_OBJECTS = [f"/sensor{i}.json" for i in range(1, 101)]
+OBJECTS = MP4_VIDEOS + SENSOR_OBJECTS
 
 # Curl format template to capture total time
 CURL_FMT = """
